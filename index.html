@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Paul Rudland — AI Consultant · Learn AI & Build with AI</title>
+<meta name="description" content="Paul Rudland helps businesses learn AI and build the things that put it to work. Twenty-five years in tech, based in Suffolk, UK." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#060912;
+    --bg-2:#0a0f1e;
+    --ink:#eef0f8;
+    --muted:#98a0b8;
+    --muted-2:#727a94;
+    --violet:#8b7cff;
+    --indigo:#6366f1;
+    --cyan:#37d3e6;
+    --coral:#ff7a59;
+    --amber:#ffb86b;
+    --glass:rgba(255,255,255,.055);
+    --glass-strong:rgba(255,255,255,.085);
+    --glass-border:rgba(255,255,255,.12);
+    --glass-border-2:rgba(255,255,255,.2);
+    --radius:22px;
+    --radius-sm:14px;
+    --maxw:1180px;
+    --font-display:"Bricolage Grotesque",system-ui,sans-serif;
+    --font-body:"Figtree",system-ui,sans-serif;
+    --font-mono:"JetBrains Mono",ui-monospace,monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--font-body);
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  /* ---------- Aurora night-sky background ---------- */
+  .sky{position:fixed;inset:0;z-index:-2;background:
+    radial-gradient(120% 90% at 50% -10%, #0d1430 0%, var(--bg-2) 42%, var(--bg) 100%);}
+  .aurora{position:fixed;inset:-20%;z-index:-1;filter:blur(70px) saturate(135%);opacity:.85;pointer-events:none}
+  .blob{position:absolute;border-radius:50%;mix-blend-mode:screen;will-change:transform}
+  .b1{width:52vw;height:52vw;left:-8vw;top:-6vw;background:radial-gradient(circle at 30% 30%, var(--violet), transparent 62%);animation:drift1 26s ease-in-out infinite}
+  .b2{width:46vw;height:46vw;right:-6vw;top:2vw;background:radial-gradient(circle at 60% 40%, var(--cyan), transparent 60%);animation:drift2 32s ease-in-out infinite}
+  .b3{width:44vw;height:44vw;left:16vw;bottom:-14vw;background:radial-gradient(circle at 50% 50%, var(--indigo), transparent 60%);animation:drift3 30s ease-in-out infinite}
+  .b4{width:30vw;height:30vw;right:8vw;bottom:-6vw;background:radial-gradient(circle at 50% 50%, var(--coral), transparent 62%);opacity:.55;animation:drift1 36s ease-in-out infinite reverse}
+  @keyframes drift1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(6vw,4vw) scale(1.12)}}
+  @keyframes drift2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-5vw,5vw) scale(1.1)}}
+  @keyframes drift3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(3vw,-5vw) scale(1.15)}}
+
+  /* faint aerial grid — a nod to the drone's-eye view */
+  .grid-lines{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.4;
+    background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+    background-size:64px 64px;
+    mask-image:radial-gradient(120% 80% at 50% 30%, #000 0%, transparent 75%);
+    -webkit-mask-image:radial-gradient(120% 80% at 50% 30%, #000 0%, transparent 75%);}
+  /* subtle grain */
+  .grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+  /* ---------- Layout helpers ---------- */
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  section{padding:100px 0;position:relative}
+  .eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan)}
+  .glass{background:var(--glass);border:1px solid var(--glass-border);
+    -webkit-backdrop-filter:blur(22px);backdrop-filter:blur(22px);
+    border-radius:var(--radius);box-shadow:0 20px 60px -30px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.08)}
+
+  /* ---------- Nav ---------- */
+  header{position:fixed;top:0;left:0;right:0;z-index:50;transition:padding .3s ease}
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;
+    margin:16px auto;max-width:var(--maxw);padding:12px 14px 12px 20px;
+    background:rgba(10,15,30,.4);border:1px solid var(--glass-border);
+    -webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border-radius:100px;
+    transition:margin .3s ease, background .3s ease}
+  header.scrolled .nav{margin-top:8px;background:rgba(8,12,24,.62)}
+  .brand{display:flex;align-items:center;gap:11px;font-family:var(--font-display);font-weight:700;font-size:17px;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
+  .mark{width:30px;height:30px;border-radius:9px;flex:none;
+    background:conic-gradient(from 210deg, var(--violet), var(--cyan), var(--coral), var(--violet));
+    box-shadow:0 0 18px -2px var(--violet);position:relative}
+  .mark::after{content:"";position:absolute;inset:6px;border-radius:4px;background:var(--bg-2);}
+  .nav-links{display:flex;gap:6px;align-items:center}
+  .nav-links a{font-size:14.5px;color:var(--muted);text-decoration:none;padding:9px 14px;border-radius:100px;transition:color .2s,background .2s}
+  .nav-links a:hover{color:var(--ink);background:rgba(255,255,255,.06)}
+  .nav-cta{font-family:var(--font-body);font-weight:600;font-size:14.5px;color:#0a0f1e !important;
+    background:linear-gradient(120deg,var(--cyan),var(--violet));padding:10px 18px !important;border-radius:100px;
+    box-shadow:0 8px 24px -8px var(--violet)}
+  .nav-cta:hover{background:linear-gradient(120deg,var(--cyan),var(--violet)) !important;filter:brightness(1.08)}
+  .menu-btn{display:none;background:none;border:0;color:var(--ink);cursor:pointer;padding:8px}
+
+  /* ---------- Hero ---------- */
+  .hero{padding-top:190px;padding-bottom:80px}
+  .hero-inner{max-width:940px}
+  .badge{display:inline-flex;align-items:center;gap:9px;font-family:var(--font-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+    padding:8px 15px;border-radius:100px;margin-bottom:28px}
+  .badge .dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);animation:pulse 2.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  h1{font-family:var(--font-display);font-weight:700;letter-spacing:-.028em;line-height:1.02;
+    font-size:clamp(2.7rem,7vw,5.4rem);margin-bottom:26px}
+  h1 .grad{background:linear-gradient(115deg,var(--cyan) 0%,var(--violet) 55%,var(--coral) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .lede{font-size:clamp(1.05rem,2.1vw,1.32rem);color:var(--muted);max-width:640px;margin-bottom:38px}
+  .lede strong{color:var(--ink);font-weight:600}
+  .cta-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+  .btn{display:inline-flex;align-items:center;gap:9px;font-weight:600;font-size:16px;text-decoration:none;padding:15px 26px;border-radius:100px;transition:transform .18s ease,filter .18s ease,background .2s}
+  .btn-primary{color:#0a0f1e;background:linear-gradient(120deg,var(--cyan),var(--violet));box-shadow:0 14px 40px -12px var(--violet)}
+  .btn-primary:hover{transform:translateY(-2px);filter:brightness(1.07)}
+  .btn-ghost{color:var(--ink);background:var(--glass);border:1px solid var(--glass-border);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+  .btn-ghost:hover{transform:translateY(-2px);background:var(--glass-strong)}
+  .btn svg{width:17px;height:17px}
+
+  .hero-strip{display:flex;flex-wrap:wrap;gap:26px 40px;margin-top:56px;padding:22px 30px;align-items:center}
+  .hero-strip .stat{display:flex;flex-direction:column}
+  .hero-strip .num{font-family:var(--font-display);font-weight:700;font-size:1.9rem;line-height:1;letter-spacing:-.02em}
+  .hero-strip .lbl{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:7px}
+  .hero-strip .divide{width:1px;height:40px;background:var(--glass-border);align-self:center}
+
+  /* hero two-column + portrait */
+  .hero-top{display:grid;grid-template-columns:1.12fr .88fr;gap:54px;align-items:center}
+  .hero-top .hero-inner{max-width:none}
+  .hero-top h1{font-size:clamp(2.4rem,4.7vw,3.75rem)}
+  .hero-portrait{position:relative;justify-self:center;width:100%;display:flex;justify-content:center}
+  .hero-portrait::before{content:"";position:absolute;inset:-16% -12%;z-index:0;
+    background:radial-gradient(circle at 62% 38%, var(--violet), transparent 60%);filter:blur(60px);opacity:.55}
+  .portrait-frame{position:relative;z-index:1;padding:7px;border-radius:26px;width:fit-content;
+    background:linear-gradient(140deg, rgba(55,211,230,.65), rgba(139,124,255,.55) 52%, rgba(255,122,89,.55));
+    box-shadow:0 34px 80px -34px rgba(0,0,0,.85)}
+  .portrait-frame img{display:block;width:100%;max-width:410px;border-radius:20px;object-fit:cover}
+  .portrait-chip{position:absolute;left:18px;bottom:18px;z-index:2;display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);
+    padding:8px 13px;border-radius:100px;background:rgba(8,12,24,.58);border:1px solid var(--glass-border);
+    -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+  .portrait-chip .pin{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+
+  /* ---------- Section headings ---------- */
+  .head{max-width:720px;margin-bottom:52px}
+  .head h2{font-family:var(--font-display);font-weight:700;letter-spacing:-.025em;line-height:1.05;
+    font-size:clamp(2rem,4.4vw,3.1rem);margin:16px 0 16px}
+  .head p{color:var(--muted);font-size:1.08rem}
+
+  /* ---------- Services ---------- */
+  .services{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .svc{padding:38px 34px;position:relative;overflow:hidden;transition:transform .3s ease,border-color .3s ease}
+  .svc:hover{transform:translateY(-5px);border-color:var(--glass-border-2)}
+  .svc .halo{position:absolute;width:220px;height:220px;border-radius:50%;filter:blur(60px);top:-70px;right:-40px;opacity:.5;transition:opacity .3s}
+  .svc:hover .halo{opacity:.85}
+  .svc.teach .halo{background:var(--cyan)}
+  .svc.build .halo{background:var(--coral)}
+  .svc .ico{width:52px;height:52px;border-radius:15px;display:grid;place-items:center;margin-bottom:22px;
+    background:var(--glass-strong);border:1px solid var(--glass-border)}
+  .svc .ico svg{width:26px;height:26px}
+  .svc.teach .ico svg{color:var(--cyan)}
+  .svc.build .ico svg{color:var(--coral)}
+  .svc .tag{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .svc h3{font-family:var(--font-display);font-weight:700;font-size:1.7rem;letter-spacing:-.02em;margin:6px 0 14px}
+  .svc p{color:var(--muted);margin-bottom:22px}
+  .svc ul{list-style:none;display:flex;flex-direction:column;gap:11px}
+  .svc li{display:flex;gap:11px;align-items:flex-start;font-size:15px;color:var(--ink)}
+  .svc li svg{width:18px;height:18px;flex:none;margin-top:3px;color:var(--cyan)}
+  .svc.build li svg{color:var(--coral)}
+
+  /* ---------- Bento ---------- */
+  .bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:150px;gap:18px}
+  .cell{padding:24px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;transition:transform .3s ease,border-color .3s ease}
+  .cell:hover{transform:translateY(-4px);border-color:var(--glass-border-2)}
+  .cell .k{font-family:var(--font-display);font-weight:700;letter-spacing:-.02em;line-height:1;font-size:2.6rem}
+  .cell .k .grad{background:linear-gradient(120deg,var(--cyan),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .cell .v{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-top:auto}
+  .cell .top{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .cell.wide{grid-column:span 2}
+  .cell.tall{grid-row:span 2}
+  .cell h4{font-family:var(--font-display);font-weight:700;font-size:1.35rem;letter-spacing:-.02em;margin:10px 0 8px}
+  .cell .body{color:var(--muted);font-size:14.5px}
+  .cell .halo{position:absolute;width:180px;height:180px;border-radius:50%;filter:blur(55px);opacity:.4;top:-50px;right:-40px}
+  .cell.feature{background:linear-gradient(135deg,rgba(139,124,255,.14),rgba(55,211,230,.08));}
+  .cell.feature .halo{background:var(--violet);opacity:.6}
+  .cell .chip{display:inline-flex;width:fit-content;align-items:center;gap:7px;font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);padding:6px 11px;border-radius:100px;background:var(--glass-strong);border:1px solid var(--glass-border)}
+
+  /* ---------- Origin story ---------- */
+  .origin-card{padding:52px 48px;position:relative;overflow:hidden}
+  .origin-card .halo{position:absolute;width:380px;height:380px;border-radius:50%;filter:blur(90px);opacity:.32;top:-140px;right:-60px;background:var(--cyan)}
+  .origin-card .halo2{position:absolute;width:300px;height:300px;border-radius:50%;filter:blur(90px);opacity:.3;bottom:-130px;left:-50px;background:var(--violet)}
+  .origin-grid{display:grid;grid-template-columns:.72fr 1.28fr;gap:48px;align-items:center;position:relative;z-index:1}
+  .origin-age{display:flex;flex-direction:column}
+  .big-age{font-family:var(--font-display);font-weight:800;letter-spacing:-.04em;line-height:.85;font-size:clamp(6rem,15vw,11rem);margin:12px 0 8px}
+  .big-age .grad{background:linear-gradient(125deg,var(--cyan),var(--violet) 58%,var(--coral));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .age-label{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);max-width:230px;line-height:1.5}
+  .origin-body h3{font-family:var(--font-display);font-weight:700;font-size:clamp(1.55rem,3.2vw,2.3rem);letter-spacing:-.025em;line-height:1.08;margin-bottom:18px}
+  .origin-body p{color:var(--muted);margin-bottom:14px}
+  .origin-body p .hl{color:var(--ink);font-weight:500}
+
+  /* ---------- Weekend feature ---------- */
+  .weekend{padding:0}
+  .weekend-card{padding:52px 48px;position:relative;overflow:hidden}
+  .weekend-card .halo{position:absolute;width:420px;height:420px;border-radius:50%;filter:blur(90px);opacity:.35;top:-160px;left:-80px;background:var(--coral)}
+  .weekend-card .halo2{position:absolute;width:360px;height:360px;border-radius:50%;filter:blur(90px);opacity:.4;bottom:-160px;right:-60px;background:var(--violet)}
+  .weekend-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:44px;align-items:center;position:relative;z-index:1}
+  .weekend h3{font-family:var(--font-display);font-weight:700;font-size:clamp(1.8rem,3.5vw,2.6rem);letter-spacing:-.025em;line-height:1.06;margin:16px 0 20px}
+  .weekend p{color:var(--muted);margin-bottom:16px}
+  .weekend .facts{display:flex;flex-direction:column;gap:14px}
+  .fact{display:flex;gap:16px;align-items:center;padding:16px 20px;border-radius:var(--radius-sm);background:var(--glass-strong);border:1px solid var(--glass-border)}
+  .fact .fk{font-family:var(--font-display);font-weight:700;font-size:1.5rem;letter-spacing:-.02em;flex:none;min-width:72px}
+  .fact .fk .grad{background:linear-gradient(120deg,var(--coral),var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .fact .fv{font-size:14px;color:var(--muted)}
+
+  /* ---------- Track record ---------- */
+  .track{display:grid;gap:14px}
+  .role{display:grid;grid-template-columns:150px 1fr auto;gap:24px;align-items:baseline;padding:24px 28px;transition:border-color .3s ease,transform .3s ease}
+  .role:hover{border-color:var(--glass-border-2);transform:translateX(4px)}
+  .role .yr{font-family:var(--font-mono);font-size:13px;color:var(--cyan);letter-spacing:.04em}
+  .role .rt{font-family:var(--font-display);font-weight:600;font-size:1.2rem;letter-spacing:-.01em}
+  .role .rc{color:var(--muted);font-size:14.5px;margin-top:3px}
+  .role .badge-role{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap;align-self:center}
+
+  /* ---------- Quote ---------- */
+  .quote-card{padding:60px 52px;text-align:center;position:relative;overflow:hidden}
+  .quote-card .halo{position:absolute;width:360px;height:360px;border-radius:50%;filter:blur(90px);opacity:.3;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--violet)}
+  .quote-card blockquote{position:relative;z-index:1;font-family:var(--font-display);font-weight:600;letter-spacing:-.02em;line-height:1.15;font-size:clamp(1.6rem,3.6vw,2.5rem);max-width:820px;margin:0 auto}
+  .quote-card cite{display:block;margin-top:26px;font-family:var(--font-mono);font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-style:normal;position:relative;z-index:1}
+
+  /* ---------- Contact ---------- */
+  .contact-card{padding:56px 48px;position:relative;overflow:hidden}
+  .contact-card .halo{position:absolute;width:440px;height:440px;border-radius:50%;filter:blur(100px);opacity:.4;top:-180px;right:-100px;background:var(--cyan)}
+  .contact-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:44px;align-items:center;position:relative;z-index:1}
+  .contact h2{font-family:var(--font-display);font-weight:700;font-size:clamp(2rem,4.4vw,3rem);letter-spacing:-.025em;line-height:1.05;margin-bottom:18px}
+  .contact p{color:var(--muted);font-size:1.08rem;margin-bottom:28px}
+  .contact-links{display:flex;flex-direction:column;gap:12px}
+  .clink{display:flex;align-items:center;gap:15px;padding:16px 20px;border-radius:var(--radius-sm);text-decoration:none;color:var(--ink);
+    background:var(--glass-strong);border:1px solid var(--glass-border);transition:transform .2s ease,border-color .2s ease}
+  .clink:hover{transform:translateX(4px);border-color:var(--glass-border-2)}
+  .clink .ci{width:42px;height:42px;border-radius:12px;flex:none;display:grid;place-items:center;background:var(--glass);border:1px solid var(--glass-border)}
+  .clink .ci svg{width:20px;height:20px;color:var(--cyan)}
+  .clink .cl-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .clink .cl-val{font-size:15.5px;font-weight:500}
+
+  /* ---------- Footer ---------- */
+  footer{padding:44px 0 60px;border-top:1px solid rgba(255,255,255,.06);margin-top:40px}
+  .foot{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center;color:var(--muted);font-size:14px}
+  .foot .brand{font-size:15px}
+
+  /* ---------- Reveal animation ---------- */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,.61,.36,1),transform .7s cubic-bezier(.22,.61,.36,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- Responsive ---------- */
+  @media(max-width:900px){
+    .services{grid-template-columns:1fr}
+    .bento{grid-template-columns:repeat(2,1fr)}
+    .cell.wide{grid-column:span 2}
+    .weekend-grid,.contact-grid,.origin-grid{grid-template-columns:1fr;gap:30px}
+    .hero-top{grid-template-columns:1fr;gap:34px}
+    .hero-portrait{order:-1}
+    .portrait-frame img{max-width:290px}
+    .role{grid-template-columns:1fr;gap:6px}
+    .role .badge-role{display:none}
+    .nav-links{display:none}
+    .menu-btn{display:block}
+    .nav-links.open{display:flex;position:absolute;top:70px;left:14px;right:14px;flex-direction:column;
+      background:rgba(8,12,24,.9);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);
+      border:1px solid var(--glass-border);border-radius:20px;padding:12px}
+    .nav-links.open a{width:100%}
+  }
+  @media(max-width:560px){
+    section{padding:70px 0}
+    .hero{padding-top:150px}
+    .bento{grid-template-columns:1fr}
+    .cell.wide{grid-column:span 1}
+    .weekend-card,.contact-card,.quote-card{padding:34px 26px}
+    .hero-strip{gap:20px 26px;padding:20px 22px}
+    .hero-strip .divide{display:none}
+  }
+
+  a:focus-visible,button:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:6px}
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none !important;scroll-behavior:auto !important}
+    .reveal{opacity:1;transform:none;transition:none}
+  }
+</style>
+</head>
+<body>
+  <div class="sky"></div>
+  <div class="aurora">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+    <div class="blob b4"></div>
+  </div>
+  <div class="grid-lines"></div>
+  <div class="grain"></div>
+
+  <!-- NAV -->
+  <header id="header">
+    <nav class="nav wrap">
+      <a href="#top" class="brand"><span class="mark"></span>Paul Rudland</a>
+      <div class="nav-links" id="navlinks">
+        <a href="#work">How I help</a>
+        <a href="#track">Track record</a>
+        <a href="#weekend">Website Weekend</a>
+        <a href="#contact" class="nav-cta">Work with me</a>
+      </div>
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero wrap" id="top">
+    <div class="hero-top">
+      <div class="hero-inner">
+        <span class="badge glass reveal"><span class="dot"></span>AI Consultant · Suffolk, UK</span>
+        <h1 class="reveal">I help businesses <span class="grad">learn AI</span> — and build the things that put it to work.</h1>
+        <p class="lede reveal">I'm Paul Rudland. Twenty-five years in tech, seven businesses of my own, and a simple way of working: <strong>everything I teach gets tested on my own lot first.</strong> If you want your team using AI properly, or you want the thing actually built, that's what I do.</p>
+        <div class="cta-row reveal">
+          <a href="#contact" class="btn btn-primary">Work with me
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="#work" class="btn btn-ghost">See how I work</a>
+        </div>
+      </div>
+      <div class="hero-portrait reveal">
+        <div class="portrait-frame">
+          <img src="paul.jpg" alt="Paul Rudland, AI consultant based in Stowmarket, Suffolk" />
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-strip glass reveal">
+      <div class="stat"><span class="num">25</span><span class="lbl">Years in tech</span></div>
+      <div class="divide"></div>
+      <div class="stat"><span class="num">7</span><span class="lbl">Businesses I run</span></div>
+      <div class="divide"></div>
+      <div class="stat"><span class="num">BSc</span><span class="lbl">Computer Science</span></div>
+      <div class="divide"></div>
+      <div class="stat"><span class="num">2</span><span class="lbl">Ways to work with me</span></div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="work" class="wrap">
+    <div class="head reveal">
+      <span class="eyebrow">How I help</span>
+      <h2>Two ways to work with me.</h2>
+      <p>Most people come to me for one of these. Some end up doing both — learn it first, then build it.</p>
+    </div>
+    <div class="services">
+      <div class="svc teach glass reveal">
+        <div class="halo"></div>
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        </div>
+        <span class="tag">Learn AI</span>
+        <h3>Teach your team AI</h3>
+        <p>I get your people using AI properly — not clicking through it, actually understanding it. Built on what gets used day to day, not a slideshow and a certificate.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Hands-on sessions, on site, tailored to your work</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Half-day and full-day business deep dives</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>One-to-one mentoring for owners and managers</li>
+        </ul>
+      </div>
+      <div class="svc build glass reveal">
+        <div class="halo"></div>
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 7l3 3"/><path d="M3 21l3-3m0 0l8-8 3 3-8 8H6v-0z"/><path d="M14 4l6 6"/><path d="M17 3l4 4-2 2-4-4z"/></svg>
+        </div>
+        <span class="tag">Build with AI</span>
+        <h3>Build the solution for you</h3>
+        <p>Sometimes you don't want to learn it — you just want it done. I build practical AI that brings work in and hands you back your time on the admin.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Lead-generating websites with funnels and lead magnets</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Workflows and admin that run themselves</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Solutions tested in my own businesses before yours</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ORIGIN STORY -->
+  <section id="story" class="wrap">
+    <div class="origin-card glass reveal">
+      <div class="halo"></div>
+      <div class="halo2"></div>
+      <div class="origin-grid">
+        <div class="origin-age">
+          <span class="eyebrow">Where it started</span>
+          <div class="big-age"><span class="grad">16</span></div>
+          <span class="age-label">The age the school put me on the payroll</span>
+        </div>
+        <div class="origin-body">
+          <h3>My mates went back for their A-levels. I went back on the payroll.</h3>
+          <p>I got into computers in a big way at school, and it only grew from there. At sixteen, while my friends returned to sit their A-levels, I returned too — but hired by the school to help run their IT systems.</p>
+          <p><span class="hl">I never really left.</span> To this day I still support school IT systems through my company, Integrated Networks. It's been the through-line of the whole twenty-five years — always hands-on, always in the real systems people actually use.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENTO -->
+  <section id="about" class="wrap">
+    <div class="head reveal">
+      <span class="eyebrow">Why listen to me</span>
+      <h2>A track record you can poke at.</h2>
+      <p>I don't teach AI from the outside. I run the businesses, take the calls, and fly the drone. Here's the shape of it.</p>
+    </div>
+    <div class="bento">
+      <div class="cell glass reveal"><div class="k"><span class="grad">25</span></div><span class="v">Years self-employed in tech</span></div>
+      <div class="cell glass reveal"><div class="k"><span class="grad">7</span></div><span class="v">Businesses running today</span></div>
+      <div class="cell wide feature glass reveal">
+        <div class="halo"></div>
+        <span class="chip"><span class="dot" style="width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)"></span>Flagship</span>
+        <h4>The Website Weekend</h4>
+        <p class="body">Two days at Ipswich Town FC. You leave with a live website you built yourself using AI.</p>
+      </div>
+      <div class="cell glass reveal"><span class="top">Education</span><h4 style="font-size:1.15rem">BSc Computer Science</h4><span class="v">Univ. Campus Suffolk</span></div>
+      <div class="cell glass reveal"><span class="top">Volunteer</span><h4 style="font-size:1.15rem">Drone Pilot</h4><span class="v">Suffolk Lowland Search &amp; Rescue</span></div>
+      <div class="cell glass reveal"><span class="top">Community</span><h4 style="font-size:1.15rem">Deputy District Commissioner</h4><span class="v">Scouts</span></div>
+      <div class="cell wide glass reveal"><span class="top">Aerial work</span><h4 style="font-size:1.15rem">Fully licensed drone pilot</h4><span class="body">Aerial photography for local businesses, day or night.</span></div>
+    </div>
+  </section>
+
+  <!-- WEEKEND -->
+  <section id="weekend" class="wrap weekend">
+    <div class="weekend-card glass reveal">
+      <div class="halo"></div>
+      <div class="halo2"></div>
+      <div class="weekend-grid">
+        <div>
+          <span class="eyebrow">The Website Weekend</span>
+          <h3>Two days. Fifteen seats. One live website — built by you.</h3>
+          <p>You arrive on the Saturday and leave on the Sunday with a working site you built yourself using AI, with funnels and lead magnets set up so it actually brings work in. By lunchtime on day two you should have a working site.</p>
+          <p>Two of us in the room. I handle the technical side. Halstead Ottley handles the business strategy and mentoring. We take you through it step by step.</p>
+          <p style="color:var(--ink);font-weight:500">It's for people who've meant to sort their website for years and never got round to it — not AI experts, and not hobbyists.</p>
+          <div class="cta-row" style="margin-top:26px">
+            <a href="#contact" class="btn btn-primary">Ask if it's a fit
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="facts">
+          <div class="fact"><span class="fk"><span class="grad">2</span></span><span class="fv">Days, Saturday to Sunday</span></div>
+          <div class="fact"><span class="fk"><span class="grad">15</span></span><span class="fv">Seats in the room — small on purpose</span></div>
+          <div class="fact"><span class="fk"><span class="grad">1</span></span><span class="fv">Live website, built by you, ready to bring in work</span></div>
+          <div class="fact"><span class="fk" style="min-width:auto;font-size:1.1rem"><span class="grad">Ipswich Town FC</span></span><span class="fv">Where it runs</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRACK RECORD -->
+  <section id="track" class="wrap">
+    <div class="head reveal">
+      <span class="eyebrow">Selected experience</span>
+      <h2>Where the twenty-five years went.</h2>
+    </div>
+    <div class="track">
+      <div class="role glass reveal">
+        <span class="yr">2026 — now</span>
+        <div><div class="rt">Founder</div><div class="rc">AI Confidence Coach — getting AI working properly for small business owners</div></div>
+        <span class="badge-role">Current</span>
+      </div>
+      <div class="role glass reveal">
+        <span class="yr">2017 — now</span>
+        <div><div class="rt">Director</div><div class="rc">Integrated Networks Ltd — IT and network training that teams actually understand</div></div>
+        <span class="badge-role">Current</span>
+      </div>
+      <div class="role glass reveal">
+        <span class="yr">2021 — now</span>
+        <div><div class="rt">Director</div><div class="rc">All Drone UK Ltd — licensed aerial photography and drone services</div></div>
+        <span class="badge-role">Current</span>
+      </div>
+      <div class="role glass reveal">
+        <span class="yr">2022 — 2025</span>
+        <div><div class="rt">Director of Operations</div><div class="rc">Stowmarket Town Football Club — day-to-day running of the club</div></div>
+        <span class="badge-role">Past</span>
+      </div>
+      <div class="role glass reveal">
+        <span class="yr">2002 — 2019</span>
+        <div><div class="rt">Owner</div><div class="rc">PSR Systems — website design, hosting and small-business IT for 17 years</div></div>
+        <span class="badge-role">Past</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <section class="wrap">
+    <div class="quote-card glass reveal">
+      <div class="halo"></div>
+      <blockquote>"Everything I teach gets tested on my own lot first."</blockquote>
+      <cite>Paul Rudland</cite>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="wrap">
+    <div class="contact-card glass reveal">
+      <div class="halo"></div>
+      <div class="contact-grid">
+        <div class="contact">
+          <span class="eyebrow">Get in touch</span>
+          <h2 style="margin-top:14px">Tell me what you're trying to do with AI.</h2>
+          <p>Whether you want your team taught or the thing built, send me a message and I'll tell you honestly if it's a fit.</p>
+        </div>
+        <div class="contact-links">
+          <a class="clink" href="mailto:Paul@aiconfidencecoach.uk">
+            <span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></span>
+            <span><span class="cl-label">Email</span><br><span class="cl-val">Paul@aiconfidencecoach.uk</span></span>
+          </a>
+          <a class="clink" href="tel:07821438685">
+            <span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.5-1.2a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z"/></svg></span>
+            <span><span class="cl-label">Phone</span><br><span class="cl-val">07821 438685</span></span>
+          </a>
+          <a class="clink" href="https://www.linkedin.com/in/paul-rudland-entrepreneur-37400034" target="_blank" rel="noopener">
+            <span class="ci"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.8 0 0 .78 0 1.75v20.5C0 23.22.8 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.75V1.75C24 .78 23.2 0 22.22 0z"/></svg></span>
+            <span><span class="cl-label">LinkedIn</span><br><span class="cl-val">Paul Rudland</span></span>
+          </a>
+          <a class="clink" href="https://aiconfidencecoach.uk" target="_blank" rel="noopener">
+            <span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/></svg></span>
+            <span><span class="cl-label">Website</span><br><span class="cl-val">aiconfidencecoach.uk</span></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap foot">
+      <a href="#top" class="brand"><span class="mark"></span>Paul Rudland</a>
+      <span>AI Consultant · Stowmarket, Suffolk, UK</span>
+      <span>© 2026 Paul Rudland</span>
+    </div>
+  </footer>
+
+<script>
+  // Nav shrink
+  const header = document.getElementById('header');
+  addEventListener('scroll', () => header.classList.toggle('scrolled', scrollY > 30), {passive:true});
+
+  // Mobile menu
+  const btn = document.getElementById('menuBtn');
+  const links = document.getElementById('navlinks');
+  btn.addEventListener('click', () => {
+    const open = links.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open);
+  });
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    links.classList.remove('open'); btn.setAttribute('aria-expanded', false);
+  }));
+
+  // Scroll reveal
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.12, rootMargin:'0px 0px -60px 0px'});
+  document.querySelectorAll('.reveal').forEach((el,i) => {
+    el.style.transitionDelay = (Math.min(i%4,3)*70) + 'ms';
+    io.observe(el);
+  });
+</script>
+</body>
+</html>
